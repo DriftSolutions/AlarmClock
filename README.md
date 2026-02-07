@@ -38,8 +38,7 @@ Pull Requests are welcome if you'd like to contribute.
 | USB Sound Card with Speakers | So you can hear the alarm going off | [Buy on Amazon](https://www.amazon.com/dp/B0CN1C1VPR/) |
 | 4 count - M2.5x8 screws with washers | For mounting LCD panel | [Buy on Amazon](https://www.amazon.com/dp/B0FG2DQYY7/) |
 | 6 count - M3x8 screws with washers | For mounting rear panel | Included in kit above |
-| Option 1: Pi Power Supply | 5V 5A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B07H125ZRL/) |
-| Option 2: Anker Prime Power Bank. I use this like a mini UPS to keep it running during short power outages. | 5V 3A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B0CZ9J3QMY/) |
+| Pi Power Supply | 5V 5A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B07H125ZRL/) |
 | 90 degree USB-C adapter | For Pi 5 power supply | [Buy on Amazon](https://www.amazon.com/dp/B0B2NJ3P3L/) |
 | U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See [USB-C 180 Adapters.png](./Images/USB-C_180_Adapters.png) for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
 | Option 1: Adafruit 4259 USB-C to USB-A Jack and a 6" USB-A to USB-C Cable | Power inlet on the back of the case | [Buy on Amazon](https://www.amazon.com/dp/B082FNRPWL/) |
