@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PID=`/bin/pidof alarm_clock`
+if [ "$PID" == "" ]; then
+	export DISPLAY=:0
+	export XDG_RUNTIME_DIR=/run/user/1000
+        ./alarm_clock &
+fi
