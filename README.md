@@ -6,9 +6,10 @@ Pull Requests are welcome if you'd like to contribute.
 
 ## 3D Models
 
-![Alarm Clock Main Body Render](Images/MainBodyRender.png)
+![Alarm Clock](Images/Alarm%20Clock%20IRL.jpg)
 
 [View Alarm Clock Main Body](STL%20Models/Alarm%20Clock%20-%20Main%20Body.stl)
+[View Alarm Clock Rear Panel](STL%20Models/Alarm%20Clock%20-%20Rear%20Panel.stl)
 
 ## Screenshots
 
@@ -38,6 +39,7 @@ Pull Requests are welcome if you'd like to contribute.
 | USB Sound Card with Speakers | So you can hear the alarm going off | [Buy on Amazon](https://www.amazon.com/dp/B0CN1C1VPR/) |
 | 4 count - M2.5x8 screws with washers | For mounting LCD panel | [Buy on Amazon](https://www.amazon.com/dp/B0FG2DQYY7/) |
 | 6 count - M3x8 screws with washers | For mounting rear panel | Included in kit above |
+| 8 count - M3x8 screws with washers | For mounting speakers | Included in kit above |
 | Pi Power Supply | 5V 5A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B07H125ZRL/) |
 | 90 degree USB-C adapter | For Pi 5 power supply | [Buy on Amazon](https://www.amazon.com/dp/B0B2NJ3P3L/) |
 | U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See [USB-C 180 Adapters.png](./Images/USB-C_180_Adapters.png) for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
@@ -46,6 +48,7 @@ Pull Requests are welcome if you'd like to contribute.
 | uxcell 30mm Arcade Button | For turning off the alarm when it's going off | [Buy on Amazon](https://www.amazon.com/dp/B07XYW58HV/) [They have other colors too](https://www.amazon.com/s?k=uxcell+30mm+Mounting+Hole+Game+Push+Button) |
 | 2x ~20cm Jumper Wires with Dupont connectors on at least one end | For connecting the Arcade Button to the Pi | [Buy on Amazon](https://www.amazon.com/dp/B0BRTJQGS6) |
 * For the power supplies / USB-C adapters, these will be different if you are using Pi 3's since they aren't USB-C.
+* Where I'm using this I happen to have a UPS already to plug into for power reliability. I haven't checked it closely but [this UPS hat](https://www.amazon.com/GeeekPi-Raspberry-Uninterruptible-Management-Expansion/dp/B09NKFYHVK) might work, but you'd have to flip the standoffs over in the opposite direction from the pictures.
 
 ## How to Build
 
@@ -66,10 +69,10 @@ Pull Requests are welcome if you'd like to contribute.
 
 13. Install the 6" USB-C cable into the 90 degreee USB-C adapter.
 14. Install the USB-C inlet jack into the rear panel. Don't connect the cable yet. The screw holes for the speakers should be pointing into the clock main body.
-x. Use 8 count x screws with washers to mount speakers to rear panel.
-x. Connect the speaker wires to the USB sound card, then install the sound card into the 180 degree USB adapter through the rear of the clock body.
-x. Connect the USB cable to the inside of the USB-C inlet through the rear of the clock body.
-x. Use 6 count M3x8 screws with washers to secure rear panel.
+15. Use 8 count M3x8 screws with washers to mount speakers to rear panel.
+16. Connect the speaker wires to the USB sound card, then install the sound card into the 180 degree USB adapter through the rear of the clock body.
+17. Connect the USB cable to the inside of the USB-C inlet through the rear of the clock body.
+18. Use 6 count M3x8 screws with washers to secure rear panel.
 
 ## Software Installation
 
@@ -112,7 +115,7 @@ reboot
 
 7. If you are lucky you are all set, cron should start your alarm clock within a minute or you can run this command if you don't want to wait:
 ```bash
-cd ~/AlarmClock/Output && ./run_alarm_clock
+cd ~/AlarmClock/Output && ./cron_run_alarm_clock
 ```
 
 8. Optional, upload your own custom sound files to ~/AlarmClock/Output/resources/alarms - it is of course safe to delete the stock ones too if you do. You'll have to kill alarm_clock for the new sound files to be picked up, since it only reads them once.
@@ -126,6 +129,5 @@ The 3D models are licensed under [Creative Commons Attribution-NonCommercial-Sha
 The GUI graphics are from [Flaticon](https://www.flaticon.com/)
 
 The credits for the included audio files are [here](./Output/resources/alarms/Included%20Audio%20Credits.txt)
-
 
 Copyright (c) 2026 Drift Solutions
