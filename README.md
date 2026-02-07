@@ -30,30 +30,28 @@ Pull Requests are welcome if you'd like to contribute.
 | Option 1: Pi Power Supply | 5V 5A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B07H125ZRL/) |
 | Option 2: Anker Prime Power Bank. I use this like a mini UPS to keep it running during short power outages. | 5V 3A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B0CZ9J3QMY/) |
 | 90 degree USB-C adapter | For Pi 5 power supply | [Buy on Amazon](https://www.amazon.com/dp/B0B2NJ3P3L/) |
-| U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See "USB-C 180 Adapters.png" for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
+| U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See [USB-C 180 Adapters.png](./Images/USB-C_180_Adapters.png) for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
 | Option 1: Adafruit 4259 USB-C to USB-A Jack and a 6" USB-A to USB-C Cable | Power inlet on the back of the case | [Buy on Amazon](https://www.amazon.com/dp/B082FNRPWL/) |
 | Option 2: Adafruit 4261 USB-C to USB-C Jack and a 6" USB-C to USB-C Cable | Power inlet on the back of the case | [Buy on Adafruit](https://www.adafruit.com/product/4261) |
 | uxcell 30mm Arcade Button | For turning off the alarm when it's going off | [Buy on Amazon](https://www.amazon.com/dp/B07XYW58HV/) [They have other colors too](https://www.amazon.com/s?k=uxcell+30mm+Mounting+Hole+Game+Push+Button) |
 | 2x ~20cm Jumper Wires with Dupont connectors on at least one end | For connecting the Arcade Button to the Pi | [Buy on Amazon](https://www.amazon.com/dp/B0BRTJQGS6) |
-|  | Optional case for mounting | [Buy on Amazon]() |
-|  | Optional case for mounting | [Buy on Amazon]() |
 * For the power supplies / USB-C adapters, these will be different if you are using Pi 3's since they aren't USB-C.
 
 ## How to Build
 
-1. 3D Print both the main body and rear panel. I used PLA+ and 0.20mm Strength profile + Gyroid + PETG Support Interface (3MF included with this preset.) The PETG support inteface is optional, but will make your life easier. Printing upside down for the main body seemed to be the best compromise of time and support material used.
-2. Use [https://www.raspberrypi.com/software/](Raspberry Pi Imager) to install Raspberry Pi OS onto your SD card. Pre-set the WiFi info and enable SSH for your convenience.
+1. 3D Print both the main body and rear panel. I used PLA+ and 0.20mm Strength profile + Gyroid + PETG Support Interface (3MF included with this preset.) The PETG support inteface is optional, but will make your life easier. Printing upside down for the main body seemed to be the best compromise of time and support material used. You can do everything through step 7 while it's printing.
+2. Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to install Raspberry Pi OS onto your SD card. Pre-set the WiFi info and enable SSH for your convenience.
 3. If applicable, install the Pi 5 cooler.
 4. Install the Pi onto the rear of the screen following the directions in the screen's listing pictures for your Pi. Use the standoffs and 4 screws that come with the screen.
 5. Insert the 90 degree USB-C adapter into the Pi's USB-C power port. *** Important: You must do this before installing the screen into the case or you'll have to take it back out ***
 6. Insert the MicroSD card into the Pi.
-7. Install the screen into the case through the front, don't screw it in yet.
-8. Connect your power supply temporarily to make sure the Pi boots up successfully and you can see the screen. If it's all good, power it off from the desktop with the touch screen, then unhook the power.
-9. Use the 4 count M2.5x8 screws with washers to secure the LCD screen from the back of the case.
-10. Insert the 180 degree USB-A adapter into the topmost USB jack on the Pi.
-11. Strip one end of the jumper wires, and solder them to the Arcade Button.
-12. Install the Arcade Button through the top of the case, and connect the jumper wires to GPIO 17 (Pin 11) and GND (Pin 9).
-13. Install the 6" USB-C cable to the 90 degreee USB-C adapter.
+7. Strip one end of the jumper wires, and solder them to the Arcade Button.
+8. Install the screen into the case through the front, don't screw it in yet.
+9. Connect your power supply temporarily to make sure the Pi boots up successfully and you can see the screen. If it's all good, power it off from the desktop with the touch screen, then unhook the power.
+10. Use the 4 count M2.5x8 screws with washers to secure the LCD screen from the back of the case.
+11. Insert the 180 degree USB-A adapter into the topmost USB jack on the Pi.
+12. Install the Arcade Button through the top of the case, and connect the jumper wires to GPIO 17 (Pin 11) and GND (Pin 9). See [Raspberry_Pi_5_GPIO-Pinout.webp](./Images/Raspberry_Pi_5_GPIO-Pinout.webp) in Images folder for diagram.
+13. Install the 6" USB-C cable into the 90 degreee USB-C adapter.
 14. Install the USB-C inlet jack into the rear panel. Don't connect the cable yet. The screw holes for the speakers should be pointing into the clock main body.
 x. Use 8 count x screws with washers to mount speakers to rear panel.
 x. Connect the speaker wires to the USB sound card, then install the sound card into the 180 degree USB adapter through the rear of the clock body.
