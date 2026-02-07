@@ -1,0 +1,30 @@
+fullscreen=1
+
+# This is what it is on my Pi 5, not sure if it will be the same for you.
+lcd_brightness_fn=/sys/class/backlight/11-0045/brightness
+# LCD brightness is from 0 to 255
+lcd_bright_level=255
+lcd_dim_level=50
+
+# By default, when use_sun = 0, it will dim from 10p to 10a if you have the "Dim When Dark" option turned on.
+# If you set use_sun = 1, it will use sun.sun from Home Assistant or calculate it locally from the coordinates below.
+use_sun=0
+# You only need to enter your coordinates if use_sun = 1
+# Default coordinates are Brockway, sister city of Ogdenville and North Haverbrook.
+latitude=41.24824681406314
+longitude=-78.79205590646596
+
+# The Home Assistant integration is optional, just comment them out or set them to blank to not use it.
+
+# Your Home Assistant URL, make sure to include the ending /
+home_assistant_url=http://hostname_or_ip_of_your_home_assistant/
+# Access token for your Home Assistant. Click your profile name, then go to the Security tab, then down to "Long-lived access tokens" to create one.
+home_assistant_token=
+
+# Binary sensor that will be set to On/Off if your alarm is going off or not. Comment out or blank to not publish one.
+home_assistant_alarming=binary_sensor.alarm_clock
+# Sensor that will be updated with the time of your next alarm. Comment out or blank to not publish one.
+home_assistant_next_alarm=input_datetime.sensor_alarm_clock_next_alarm
+
+# Grab the current weather from Home Assistant to display on the block. Not sure if this will work with other weather providers or not. Comment out or blank to not show the weather.
+home_assistant_weather=weather.openweathermap
