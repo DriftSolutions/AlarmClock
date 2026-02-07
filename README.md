@@ -61,27 +61,30 @@ x. Use 6 count M3x8 screws with washers to secure rear panel.
 ## Software Installation
 
 1. Boot up the Pi and SSH in.
-2. Run sudo /boot/firmware/config.txt
+2. Run: sudo /boot/firmware/config.txt
 
 Look for the line that starts with dtparam=audio and make sure it is set to off. Then add this dtoverlay line after it (this makes the arcade button work):
 
-```dtparam=audio=off
+```
+dtparam=audio=off
 dtoverlay=gpio-key,gpio=17,active_low=1,gpio_pull=up,keycode=28
 ```
 
 3. Install the required dependencies:
 
-```sudo apt install build-essential cmake pkg-config libcurl4-openssl-dev libunivalue-dev libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev libsdl2-mixer-dev git
+```bash
+sudo apt install build-essential cmake pkg-config libcurl4-openssl-dev libunivalue-dev libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-gfx-dev libsdl2-mixer-dev git
 ```
 
 4. Run the following commands:
 
-```cd ~
+```bash
+cd ~
 git clone https://github.com/DriftSolutions/AlarmClock
 cd AlarmClock/Output
 cmake ..
 make -j4
-mv data/alarmclock.conf.example
+mv data/alarmclock.conf.example data/alarmclock.conf
 nano data/alarmclock.conf
 # Update alarmclock.conf with your settings here.
 reboot
@@ -90,11 +93,13 @@ reboot
 5. When the reboot is complete, SSH back in.
 
 6. Set up a cronjob to auto-run your clock. You could also make a service file if you'd rather.
-```* * * * * cd /home/your_username/AlarmClock/Output && ./run_alarm_clock
+```
+* * * * * cd /home/your_username/AlarmClock/Output && ./run_alarm_clock
 ```
 
 7. If you are lucky you are all set, cron should start your alarm clock within a minute or you can run this command if you don't want to wait:
-```cd ~/AlarmClock/Output && ./run_alarm_clock
+```bash
+cd ~/AlarmClock/Output && ./run_alarm_clock
 ```
 
 8. Optional, upload your own custom sound files to ~/AlarmClock/Output/resources/alarms - it is of course safe to delete the stock ones too if you do. You'll have to kill alarm_clock for the new sound files to be picked up, since it only reads them once.
@@ -102,7 +107,12 @@ reboot
 ## Licenses
 
 The software is licensed under the MIT license, see included LICENSE file.
+
 The 3D models are licensed under [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA 4.0)
+
 The GUI graphics are from [Flaticon](https://www.flaticon.com/)
+
+The credits for the included audio files are [here](./Output/resources/alarms/Included%20Audio%20Credits.txt)
+
 
 Copyright (c) 2026 Drift Solutions
