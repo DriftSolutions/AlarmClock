@@ -4,6 +4,15 @@ A 3D printed touchscreen alarm clock with Home Assistant integration, designed f
 
 Pull Requests are welcome if you'd like to contribute.
 
+## 3D Models
+
+![Alarm Clock Main Body](Images/STL%20Models/Alarm%20Clock%20-%20Main%20Body.stl)
+
+## Screenshots
+
+![Alarm Clock Screenshot](Images/ScreenShot1.png)
+![Main Menu Screenshot](Images/ScreenShot2.png)
+
 ## Features
 
 - Large, easy-to-read time display
