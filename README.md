@@ -98,7 +98,7 @@ sudo apt install build-essential cmake pkg-config libcurl4-openssl-dev libunival
 cd ~
 git clone https://github.com/DriftSolutions/AlarmClock
 cd AlarmClock/Output
-cmake ..
+cmake ../AlarmClock
 make -j4
 mv data/alarmclock.conf.example data/alarmclock.conf
 nano data/alarmclock.conf
