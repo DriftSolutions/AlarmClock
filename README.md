@@ -49,8 +49,11 @@ Pull Requests are welcome if you'd like to contribute.
 8. Install the screen into the case through the front, don't screw it in yet.
 9. Connect your power supply temporarily to make sure the Pi boots up successfully and you can see the screen. If it's all good, power it off from the desktop with the touch screen, then unhook the power.
 10. Use the 4 count M2.5x8 screws with washers to secure the LCD screen from the back of the case.
-11. Insert the 180 degree USB-A adapter into the topmost USB jack on the Pi.
+11. Insert the 180 degree USB-A adapter into the bottommost USB jack on the Pi that is closest to the rear of the case.
 12. Install the Arcade Button through the top of the case, and connect the jumper wires to GPIO 17 (Pin 11) and GND (Pin 9). See [Raspberry_Pi_5_GPIO-Pinout.webp](./Images/Raspberry_Pi_5_GPIO-Pinout.webp) in Images folder for diagram.
+### At this point, your alarm clock should look like this:
+![View after Step 12](Images/Step_12.jpg)
+
 13. Install the 6" USB-C cable into the 90 degreee USB-C adapter.
 14. Install the USB-C inlet jack into the rear panel. Don't connect the cable yet. The screw holes for the speakers should be pointing into the clock main body.
 x. Use 8 count x screws with washers to mount speakers to rear panel.
