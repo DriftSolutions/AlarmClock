@@ -6,7 +6,9 @@ Pull Requests are welcome if you'd like to contribute.
 
 ## 3D Models
 
-![Alarm Clock Main Body](Images/STL%20Models/Alarm%20Clock%20-%20Main%20Body.stl)
+![Alarm Clock Main Body Render](Images/MainBodyRender.png)
+
+[View Alarm Clock Main Body](STL%20Models/Alarm%20Clock%20-%20Main%20Body.stl)
 
 ## Screenshots
 
