@@ -238,7 +238,7 @@ void draw_text_wrapped(int ptSize, const SDL_Rect& rc, uint8 align, const SDL_Co
 }
 
 void CachedText::Draw() {
-	draw_text(font, rc, align, col, str, style);
+	draw_text(font, rc, align, col, _str, style);
 }
 
 string ts_to_str(time_t ts) {

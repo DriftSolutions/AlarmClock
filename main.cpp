@@ -658,7 +658,7 @@ inline void alarm_loop() {
             }
         }
 
-        if (config.options.ShouldAlarmAt(last, &cur)) {
+        if (config.options.enable_alarm && config.options.ShouldAlarmAt(last, &cur)) {
             config.Alarm();
         }
 
@@ -980,6 +980,7 @@ void ConfigOptions::ToUniValue(UniValue& obj) {
     obj.pushKV("enable_alarm", enable_alarm);
     obj.pushKV("dim_when_dark", dim_when_dark);
     obj.pushKV("auto_enable_at_midnight", auto_enable_at_midnight);
+    obj.pushKV("flip_clock_style", flip_clock_style);
     obj.pushKV("screen_timeout", screen_timeout / 1000);
 
     UniValue ota(UniValue::VOBJ);
@@ -1016,6 +1017,9 @@ bool ConfigOptions::FromUniValue(const UniValue& obj) {
     }
     if (obj.exists("auto_enable_at_midnight") && obj["auto_enable_at_midnight"].isBool()) {
         auto_enable_at_midnight = obj["auto_enable_at_midnight"].getBool();
+    }
+    if (obj.exists("flip_clock_style") && obj["flip_clock_style"].isBool()) {
+        flip_clock_style = obj["flip_clock_style"].getBool();
     }    
     if (obj.exists("screen_timeout") && obj["screen_timeout"].isNum()) {
         screen_timeout = (uint64)max((int64_t)1, obj["screen_timeout"].get_int64()) * 1000;

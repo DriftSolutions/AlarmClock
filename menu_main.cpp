@@ -25,9 +25,11 @@ public:
 
     virtual MENU_CLICK_RETURN OnPress() {
         config.options.enable_alarm = !config.options.enable_alarm;
+        /*
         if (!config.options.enable_alarm) {
             config.ClearAlarm();
         }
+        */
         updateText();
         save_dynamic_settings();
         return MCR_DO_NOTHING;
@@ -46,8 +48,6 @@ public:
             struct tm tm = { 0 };
             tm.tm_hour = config.options.one_time_alarm.hour;
             tm.tm_min = config.options.one_time_alarm.minute;
-            //text += "\n\n";
-            //text += tm_to_str(tm);
             footer = tm_to_str(tm);
         } else {
             footer.clear();

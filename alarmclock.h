@@ -36,6 +36,7 @@
 
 #define TITLE_FONT_SIZE 42
 #define TIME_FONT_SIZE 200
+#define FLIP_TIME_FONT_SIZE 100
 #define ALARM_FONT_SIZE 96
 #define MENU_FONT_SIZE 36
 #define FOOTER_FONT_SIZE 24
@@ -107,6 +108,7 @@ public:
 	bool enable_alarm = false;
 	bool dim_when_dark = true;
 	bool auto_enable_at_midnight = false;
+	bool flip_clock_style = false;
 	// If there is no activity, it will return to the clock display after this long
 #ifdef DEBUG
 	uint64 screen_timeout = 30000;

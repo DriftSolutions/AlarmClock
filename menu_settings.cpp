@@ -65,6 +65,35 @@ public:
     }
 };
 
+class MenuItem_MainMenu_FlipClockStyle : public MenuItem {
+public:
+    MenuItem_MainMenu_FlipClockStyle() {
+        text = "Flip Clock Style";
+        updateFooter();
+    }
+
+    void updateFooter() {
+        footer = config.options.dim_when_dark ? "On" : "Off";
+    }
+
+    void getColors(SDL_Color& bgcol, SDL_Color& fgcol) {
+        if (config.options.flip_clock_style) {
+            bgcol = colors.menu_highlight_bg;
+            fgcol = colors.menu_highlight_text;
+        } else {
+            bgcol = colors.menu_normal_bg;
+            fgcol = colors.menu_normal_text;
+        }
+    }
+
+    virtual MENU_CLICK_RETURN OnPress() {
+        config.options.flip_clock_style = !config.options.flip_clock_style;
+        updateFooter();
+        save_dynamic_settings();
+        return MCR_DO_NOTHING;
+    }
+};
+
 class MenuItem_MainMenu_ScreenTimeout : public MenuItem {
 public:
     set<uint64> options = { 15000, 30000, 45000, 60000 };
@@ -120,6 +149,10 @@ void switch_to_menu_settings() {
     i = make_shared<MenuItem_MainMenu_ScreenTimeout>();
     i->rc = config.menu_buttons.buttons[btn_ind++];
     m->items.push_back(i);
+
+    i = make_shared<MenuItem_MainMenu_FlipClockStyle>();
+    i->rc = config.menu_buttons.buttons[btn_ind++];
+    m->items.push_back(i);    
 
     i = make_shared<MenuItem_MainMenu_Exit>();
     i->rc = config.menu_buttons.buttons[btn_ind++];

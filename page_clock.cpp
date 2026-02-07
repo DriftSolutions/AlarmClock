@@ -3,9 +3,110 @@
 
 #include "alarmclock.h"
 
+class FlipClockDigit {
+public:
+	SDL_Rect rc = { 0 };
+	CachedText txt;
+};
+
+class FlipClock {
+private:
+	string str;
+	vector<FlipClockDigit> digits;
+
+	const int hor_padding = 30;
+	const int vert_padding = 10;
+	const int hor_spacing = 10;
+	const int border_radius = 10;
+
+	SDL_Color text_col = { 0 };
+public:
+	~FlipClock() {
+		Reset();
+	}
+
+	void SetString(const string& pstr) {
+		if (str != pstr) {
+			Reset();
+			str = pstr;
+		}
+	}
+
+	void Render() {
+		if (str.empty()) { return; }
+
+		auto font = GetMonoFontSize(FLIP_TIME_FONT_SIZE);
+		//str = "12:55p";
+
+		digits.clear();
+		if (digits.size() == 0) {
+			SDL_Size max_size = { 0 };
+			TTF_SizeUTF8(font, "X", &max_size.w, &max_size.h);
+
+			const int cell_w = (max_size.w + (hor_padding * 2));
+			const int total_w = (cell_w * str.length()) + (hor_spacing * (str.length() - 1));
+			const int cell_h = (max_size.h + (vert_padding * 2));
+
+			int cx = config.main_area.x + ((config.main_area.w - total_w) / 2);
+			int cy = config.main_area.y + ((config.main_area.h - cell_h) / 2);
+
+			for (size_t i = 0; i < str.length(); i++) {
+				FlipClockDigit d;
+				d.rc = d.txt.rc = { cx, cy, cell_w, cell_h };
+				d.txt.align = DTA_CENTER | DTA_MIDDLE;
+				d.txt.font = font;
+				d.txt.col = text_col;
+				d.txt.setText(str.substr(i, 1));
+
+				digits.push_back(std::move(d));
+
+				cx += cell_w + hor_spacing;
+			}
+		}
+
+		int hinge_h = 23;
+		int hinge_w = hor_padding / 2;
+
+		SDL_SetRenderDrawColor(config.mRenderer, { 0xff,0,0,0xff });
+		for (auto& d : digits) {
+			const auto& rc = d.rc;
+			const auto& border = text_col;
+			//SDL_Rect rc = { config.main_area.x, config.main_area.y, total_w, cell_h };
+			//SDL_RenderDrawRect(config.mRenderer, &d.rc);
+			if (!config.is_dark) {
+				const auto& bg = colors.menu_page_bg;
+				roundedBoxRGBA(config.mRenderer, rc.x, rc.y, rc.x + rc.w, rc.y + rc.h, border_radius, bg.r, bg.g, bg.b, bg.a);
+			}
+			roundedRectangleRGBA(config.mRenderer, rc.x, rc.y, rc.x + rc.w, rc.y + rc.h, border_radius, border.r, border.g, border.b, border.a);
+			roundedRectangleRGBA(config.mRenderer, rc.x, rc.y + 1, rc.x + rc.w, rc.y + rc.h + 1, border_radius, border.r, border.g, border.b, border.a);
+			roundedRectangleRGBA(config.mRenderer, rc.x, rc.y - 1, rc.x + rc.w, rc.y + rc.h - 1, border_radius, border.r, border.g, border.b, border.a);
+
+			rectangleRGBA(config.mRenderer, rc.x, rc.y + (rc.h / 2) - (hinge_h / 2), rc.x + hinge_w, rc.y + (rc.h / 2) + (hinge_h / 2), border.r, border.g, border.b, border.a);
+			rectangleRGBA(config.mRenderer, rc.x + rc.w - hinge_w, rc.y + (rc.h / 2) - (hinge_h / 2), rc.x + rc.w + 1, rc.y + (rc.h / 2) + (hinge_h / 2), border.r, border.g, border.b, border.a);
+
+			d.txt.Draw();
+
+			thickLineRGBA(config.mRenderer, rc.x + hinge_w, rc.y + (rc.h / 2) - 1, rc.x + rc.w - hinge_w - 1, rc.y + (rc.h / 2) - 1, 3, colors.clock_bg.r, colors.clock_bg.g, colors.clock_bg.b, colors.clock_bg.a);
+		}
+	}
+
+	void Reset() {
+		digits.clear();
+	}
+
+	void setTextColor(const SDL_Color& col) {
+		text_col = col;
+		for (auto& d : digits) {
+			d.txt.col = col;
+		}
+	}
+};
+
 class PageClock : public Page {
 public:
 	CachedText txtTime, txtDate, txtAlarm, txtWeather;
+	FlipClock flip;
+
 	int64 last_time = 0;
 	bool have_weather = false;
 	SDL_Color text_col = colors.clock_text;
@@ -32,6 +133,7 @@ void PageClock::OnDarkChanged() {
 	txtAlarm.free_texture();
 	txtWeather.col = text_col;
 	txtWeather.free_texture();
+	flip.setTextColor(text_col);
 }
 
 void PageClock::OnActivate() {
@@ -65,6 +167,7 @@ void PageClock::Tick() {
 		txtDate.setText(buf);
 
 		txtTime.setText(tm_to_str(tm));
+		flip.SetString(tm_to_str(tm));
 	}
 
 	auto& ha = config.home_assistant.info;
@@ -97,6 +200,8 @@ void PageClock::Render() {
 	txtDate.Draw();
 	if (config.alarming) {
 		draw_text_wrapped(GetFontSize(ALARM_FONT_SIZE), config.main_area, DTA_CENTER | DTA_MIDDLE, colors.clock_text, "Time to Wake Up!");
+	} else if (config.options.flip_clock_style) {
+		flip.Render();
 	} else {
 		txtTime.Draw();
 	}

@@ -7,6 +7,7 @@
 class PageMenu : public Page {
 private:
 	Uint64 lastActivity = SDL_GetTicks64();
+	Uint32 updateNextAlarmTicks = 0;
 public:
 	list<shared_ptr<Menu>> stack;
 	shared_ptr<Menu> menu;
@@ -74,18 +75,20 @@ void PageMenu::Tick() {
 		next_button->enabled = (menu && menu->first_ind + NUM_BUTTONS < menu->items.size());
 	}
 
-	if (config.options.enable_alarm) {
-		time_t ts = config.options.GetNextAlarmTime();
-		if (ts > 0) {
-			struct tm tm;
-			localtime_r(&ts, &tm);
-			statusbar_set(SB_NEXT_ALARM, mprintf("Next alarm: %s %s", get_relative_day_string(tm).c_str(), tm_to_str(tm).c_str()));
-			//statusbar_set(SB_NEXT_ALARM, mprintf("Next alarm_chunk: %d/%d %s", tm.tm_mon + 1, tm.tm_mday, tm_to_str(tm).c_str()));
+	if (updateNextAlarmTicks++ % config.fps == 0) {
+		if (config.options.enable_alarm) {
+			time_t ts = config.options.GetNextAlarmTime();
+			if (ts > 0) {
+				struct tm tm;
+				localtime_r(&ts, &tm);
+				statusbar_set(SB_NEXT_ALARM, mprintf("Next alarm: %s %s", get_relative_day_string(tm).c_str(), tm_to_str(tm).c_str()));
+				//statusbar_set(SB_NEXT_ALARM, mprintf("Next alarm_chunk: %d/%d %s", tm.tm_mon + 1, tm.tm_mday, tm_to_str(tm).c_str()));
+			} else {
+				statusbar_set(SB_NEXT_ALARM, "No Times Set");
+			}
 		} else {
-			statusbar_set(SB_NEXT_ALARM, "No Times Set");
+			statusbar_set(SB_NEXT_ALARM, "Alarm Off");
 		}
-	} else {
-		statusbar_set(SB_NEXT_ALARM, "Alarm Off");
 	}
 }
 
