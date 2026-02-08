@@ -38,8 +38,8 @@ Pull Requests are welcome if you'd like to contribute.
 | Hosyond 5" DSI Display | 800x480 capacitive touchscreen | [Buy on Amazon](https://www.amazon.com/dp/B0CXTFN8K9/) |
 | USB Sound Card with Speakers | So you can hear the alarm going off | [Buy on Amazon](https://www.amazon.com/dp/B0CN1C1VPR/) |
 | 4 count - M2.5x8 screws with washers | For mounting LCD panel | [Buy on Amazon](https://www.amazon.com/dp/B0FG2DQYY7/) |
-| 6 count - M3x8 screws with washers | For mounting rear panel | Included in kit above |
-| 8 count - M3x8 screws with washers | For mounting speakers | Included in kit above |
+| 4 to 8 count (use your judgement) - M2.5x8 or M3x8 screws with washers | For mounting rear panel | Included in kit above |
+| 4 to 8 count (use your judgement) - M3x8 screws with washers | For mounting speakers | Included in kit above |
 | Pi Power Supply | 5V 5A power supply for Pi 5 | [Buy on Amazon](https://www.amazon.com/dp/B07H125ZRL/) |
 | 90 degree USB-C adapter | For Pi 5 power supply | [Buy on Amazon](https://www.amazon.com/dp/B0B2NJ3P3L/) |
 | U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See [USB-C 180 Adapters.png](./Images/USB-C_180_Adapters.png) for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
@@ -69,10 +69,10 @@ Pull Requests are welcome if you'd like to contribute.
 
 13. Install the 6" USB-C cable into the 90 degreee USB-C adapter.
 14. Install the USB-C inlet jack into the rear panel. Don't connect the cable yet. The screw holes for the speakers should be pointing into the clock main body.
-15. Use 8 count M3x8 screws with washers to mount speakers to rear panel.
+15. Use 4-8 M3x8 screws with washers to mount speakers to rear panel. I just put 2 in each on opposite corners and that seemed like plenty.
 16. Connect the speaker wires to the USB sound card, then install the sound card into the 180 degree USB adapter through the rear of the clock body.
 17. Connect the USB cable to the inside of the USB-C inlet through the rear of the clock body.
-18. Use 6 count M3x8 screws with washers to secure rear panel.
+18. Use 4-8 count M2.5x8 or M3x8 screws with washers to secure rear panel. If M2.5 screws feel too loose in your print, step up to the M3.
 
 ## Software Installation
 
