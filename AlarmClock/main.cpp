@@ -675,12 +675,12 @@ inline void alarm_loop() {
                 alarm_chunk = NULL;
             }
 
-            if (time(NULL) - lastAlarmAudioTime >= 30) {
+            if (time(NULL) - lastAlarmAudioTime >= 5) {
                 string fn;
                 if (GetAlarmFile(fn)) {
                     printf("Attempting to play alarm file %s ...\n", fn.c_str());
                     alarm_chunk = Mix_LoadWAV(fn.c_str());
-                    Mix_Volume(ALERT_CHANNEL, int(MIX_MAX_VOLUME * 0.25));
+                    //Mix_Volume(ALERT_CHANNEL, int(MIX_MAX_VOLUME * 0.25));
                     if (alarm_chunk == NULL || Mix_PlayChannel(ALERT_CHANNEL, alarm_chunk, 0) == -1) {
                         mprintf("Error playing %s: %s\n", fn.c_str(), Mix_GetError());
 #ifdef WIN32
