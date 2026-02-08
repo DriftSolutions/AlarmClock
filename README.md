@@ -47,6 +47,7 @@ Pull Requests are welcome if you'd like to contribute.
 | Option 2: Adafruit 4261 USB-C to USB-C Jack and a 6" USB-C to USB-C Cable | Power inlet on the back of the case | [Buy on Adafruit](https://www.adafruit.com/product/4261) |
 | uxcell 30mm Arcade Button | For turning off the alarm when it's going off | [Buy on Amazon](https://www.amazon.com/dp/B07XYW58HV/) [They have other colors too](https://www.amazon.com/s?k=uxcell+30mm+Mounting+Hole+Game+Push+Button) |
 | 2x ~20cm Jumper Wires with Dupont connectors on at least one end | For connecting the Arcade Button to the Pi | [Buy on Amazon](https://www.amazon.com/dp/B0BRTJQGS6) |
+| 4x Small Rubber Feet (Cabinet Door/Drawer Bumpers) | For the bottom, for grip and to allow airflow in for cooling | [Buy on Amazon](https://www.amazon.com/dp/B08BR6CGWL) |
 * For the power supplies / USB-C adapters, these will be different if you are using Pi 3's since they aren't USB-C.
 * Where I'm using this I happen to have a UPS already to plug into for power reliability. I haven't checked it closely but [this UPS hat](https://www.amazon.com/GeeekPi-Raspberry-Uninterruptible-Management-Expansion/dp/B09NKFYHVK) might work, but you'd have to flip the standoffs over in the opposite direction from the pictures.
 
@@ -73,6 +74,7 @@ Pull Requests are welcome if you'd like to contribute.
 16. Connect the speaker wires to the USB sound card, then install the sound card into the 180 degree USB adapter through the rear of the clock body.
 17. Connect the USB cable to the inside of the USB-C inlet through the rear of the clock body.
 18. Use 4-8 count M2.5x8 or M3x8 screws with washers to secure rear panel. If M2.5 screws feel too loose in your print, step up to the M3.
+19. Install 4x rubber feet on the bottom close to the corners.
 
 ## Software Installation
 
