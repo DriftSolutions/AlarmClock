@@ -88,6 +88,16 @@ dtparam=audio=off
 dtoverlay=gpio-key,gpio=17,active_low=1,gpio_pull=up,keycode=28
 ```
 
+Next, look for this line:
+```
+dtoverlay=vc4-kms-v3d
+```
+And change it to:
+```
+dtoverlay=vc4-kms-v3d,noaudio
+```
+This disables HDMI audio outputs so ALSA doesn't get confused and play audio to them instead of your USB speakers.
+
 3. Install the required dependencies:
 
 ```bash
