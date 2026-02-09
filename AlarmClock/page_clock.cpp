@@ -52,10 +52,11 @@ public:
 
 			for (size_t i = 0; i < str.length(); i++) {
 				FlipClockDigit d;
-				d.rc = d.txt->rc = { cx, cy, cell_w, cell_h };
+				d.rc = { cx, cy, cell_w, cell_h };
+				d.txt->setRect(d.rc);
 				d.txt->align = DTA_CENTER | DTA_MIDDLE;
 				d.txt->font_size = FLIP_TIME_FONT_SIZE;
-				d.txt->col = text_col;
+				d.txt->setColor(text_col);
 				d.txt->setText(str.substr(i, 1));
 
 				digits.push_back(std::move(d));
@@ -97,8 +98,7 @@ public:
 	void setTextColor(const SDL_Color& col) {
 		text_col = col;
 		for (auto& d : digits) {
-			d.txt->col = col;
-			d.txt->clearCache();
+			d.txt->setColor(col);
 		}
 	}
 };
@@ -126,33 +126,29 @@ void PageClock::OnDarkChanged() {
 	} else {
 		text_col = colors.clock_text;
 	}
-	txtTime.col = text_col;
-	txtTime.clearCache();
-	txtDate.col = text_col;
-	txtDate.clearCache();
-	txtAlarm.col = text_col;
-	txtAlarm.clearCache();
-	txtWeather.col = text_col;
-	txtWeather.clearCache();
+	txtTime.setColor(text_col);
+	txtDate.setColor(text_col);
+	txtAlarm.setColor(text_col);
+	txtWeather.setColor(text_col);
 	flip.setTextColor(text_col);
 }
 
 void PageClock::OnActivate() {
 	txtTime.font_size = TIME_FONT_SIZE;
-	txtTime.rc = { 0, 0, config.win_size.w, config.win_size.h }; // config.main_area;
+	txtTime.setRect({ 0, 0, config.win_size.w, config.win_size.h }); // config.main_area;
 	txtTime.align = DTA_CENTER | DTA_MIDDLE;
 
 	txtDate.font_size = TITLE_FONT_SIZE;
-	txtDate.rc = { 0, 0, config.win_size.w, config.win_size.h - 10 };
+	txtDate.setRect({ 0, 0, config.win_size.w, config.win_size.h - 10 });
 	txtDate.align = DTA_CENTER | DTA_BOTTOM;
 
 	txtAlarm.font_size = TITLE_FONT_SIZE;
-	txtAlarm.rc = config.title_area;
+	txtAlarm.setRect(config.title_area);
 	txtAlarm.align = DTA_LEFT | DTA_MIDDLE;
 	txtAlarm.setText("Alarm On");
 
 	txtWeather.font_size = TITLE_FONT_SIZE;
-	txtWeather.rc = config.title_area;
+	txtWeather.setRect(config.title_area);
 	txtWeather.align = DTA_RIGHT | DTA_MIDDLE;
 
 	OnDarkChanged();

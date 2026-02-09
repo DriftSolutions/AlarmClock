@@ -259,14 +259,16 @@ private:
 	string _str;
 	SDL_Texture* tex = NULL;
 	SDL_Size tex_size = { 0 };
+	SDL_Color _col = { 0 };
+	SDL_Rect _rc = { 0 };
 public:
 	const string& str = _str;
+	const SDL_Color& col = _col;
+	const SDL_Rect& rc = _rc;
 
 	// If you change of any of these, makes sure to call clearCache()
 	int font_size = 12;
-	SDL_Rect rc = { 0 };
 	uint8 align = DTA_LEFT | DTA_TOP;
-	SDL_Color col = { 0 };
 	int style = TTF_STYLE_NORMAL;
 
 	void setText(const string& pstr) {
@@ -275,6 +277,19 @@ public:
 			clearCache();
 		}
 	}
+	void setColor(const SDL_Color& pcol) {
+		if (memcmp(&col, &pcol, sizeof(SDL_Color))) {
+			_col = pcol;
+			clearCache();
+		}
+	}
+	void setRect(const SDL_Rect& prc) {
+		if (memcmp(&rc, &prc, sizeof(SDL_Rect))) {
+			_rc = prc;
+			clearCache();
+		}
+	}
+
 	void Draw();
 
 	void clearCache() {
@@ -283,9 +298,16 @@ public:
 			tex = NULL;
 		}
 	}
+
+	CachedText() {}
 	~CachedText() {
 		clearCache();
 	}
+
+	// Delete the copy constructor
+	CachedText(const CachedText&) = delete;
+	// Delete the copy assignment operator
+	CachedText& operator=(const CachedText&) = delete;
 };
 
 void SDL_SetRenderDrawColor(SDL_Renderer* r, const SDL_Color& col);
