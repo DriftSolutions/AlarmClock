@@ -6,7 +6,7 @@
 class FlipClockDigit {
 public:
 	SDL_Rect rc = { 0 };
-	CachedText txt;
+	shared_ptr<CachedText> txt = make_shared<CachedText>();
 };
 
 class FlipClock {
@@ -44,7 +44,7 @@ public:
 			TTF_SizeUTF8(font, "X", &max_size.w, &max_size.h);
 
 			const int cell_w = (max_size.w + (hor_padding * 2));
-			const int total_w = (cell_w * str.length()) + (hor_spacing * (str.length() - 1));
+			const int total_w = (cell_w * (int)str.length()) + (hor_spacing * (int)(str.length() - 1));
 			const int cell_h = (max_size.h + (vert_padding * 2));
 
 			int cx = config.main_area.x + ((config.main_area.w - total_w) / 2);
@@ -52,11 +52,11 @@ public:
 
 			for (size_t i = 0; i < str.length(); i++) {
 				FlipClockDigit d;
-				d.rc = d.txt.rc = { cx, cy, cell_w, cell_h };
-				d.txt.align = DTA_CENTER | DTA_MIDDLE;
-				d.txt.font = font;
-				d.txt.col = text_col;
-				d.txt.setText(str.substr(i, 1));
+				d.rc = d.txt->rc = { cx, cy, cell_w, cell_h };
+				d.txt->align = DTA_CENTER | DTA_MIDDLE;
+				d.txt->font_size = FLIP_TIME_FONT_SIZE;
+				d.txt->col = text_col;
+				d.txt->setText(str.substr(i, 1));
 
 				digits.push_back(std::move(d));
 
@@ -84,7 +84,7 @@ public:
 			rectangleRGBA(config.mRenderer, rc.x, rc.y + (rc.h / 2) - (hinge_h / 2), rc.x + hinge_w, rc.y + (rc.h / 2) + (hinge_h / 2), border.r, border.g, border.b, border.a);
 			rectangleRGBA(config.mRenderer, rc.x + rc.w - hinge_w, rc.y + (rc.h / 2) - (hinge_h / 2), rc.x + rc.w + 1, rc.y + (rc.h / 2) + (hinge_h / 2), border.r, border.g, border.b, border.a);
 
-			d.txt.Draw();
+			d.txt->Draw();
 
 			thickLineRGBA(config.mRenderer, rc.x + hinge_w, rc.y + (rc.h / 2) - 1, rc.x + rc.w - hinge_w - 1, rc.y + (rc.h / 2) - 1, 3, colors.clock_bg.r, colors.clock_bg.g, colors.clock_bg.b, colors.clock_bg.a);
 		}
@@ -97,7 +97,8 @@ public:
 	void setTextColor(const SDL_Color& col) {
 		text_col = col;
 		for (auto& d : digits) {
-			d.txt.col = col;
+			d.txt->col = col;
+			d.txt->clearCache();
 		}
 	}
 };
@@ -126,31 +127,31 @@ void PageClock::OnDarkChanged() {
 		text_col = colors.clock_text;
 	}
 	txtTime.col = text_col;
-	txtTime.free_texture();
+	txtTime.clearCache();
 	txtDate.col = text_col;
-	txtDate.free_texture();
+	txtDate.clearCache();
 	txtAlarm.col = text_col;
-	txtAlarm.free_texture();
+	txtAlarm.clearCache();
 	txtWeather.col = text_col;
-	txtWeather.free_texture();
+	txtWeather.clearCache();
 	flip.setTextColor(text_col);
 }
 
 void PageClock::OnActivate() {
-	txtTime.font = GetFontSize(TIME_FONT_SIZE);
+	txtTime.font_size = TIME_FONT_SIZE;
 	txtTime.rc = { 0, 0, config.win_size.w, config.win_size.h }; // config.main_area;
 	txtTime.align = DTA_CENTER | DTA_MIDDLE;
 
-	txtDate.font = GetFontSize(TITLE_FONT_SIZE);
+	txtDate.font_size = TITLE_FONT_SIZE;
 	txtDate.rc = { 0, 0, config.win_size.w, config.win_size.h - 10 };
 	txtDate.align = DTA_CENTER | DTA_BOTTOM;
 
-	txtAlarm.font = GetFontSize(TITLE_FONT_SIZE);
+	txtAlarm.font_size = TITLE_FONT_SIZE;
 	txtAlarm.rc = config.title_area;
 	txtAlarm.align = DTA_LEFT | DTA_MIDDLE;
 	txtAlarm.setText("Alarm On");
 
-	txtWeather.font = GetFontSize(TITLE_FONT_SIZE);
+	txtWeather.font_size = TITLE_FONT_SIZE;
 	txtWeather.rc = config.title_area;
 	txtWeather.align = DTA_RIGHT | DTA_MIDDLE;
 

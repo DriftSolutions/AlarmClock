@@ -11,15 +11,12 @@ void draw_text(TTF_Font* font, int x, int y, const SDL_Color& col, const char* s
 	if (font == NULL) {
 		font = config.backup_font;
 	}
-	//SDL_Color col_white = { 255, 255, 255 };
 
 	int old = TTF_GetFontStyle(font);
 	TTF_SetFontStyle(font, style);
-	//static wchar_t tmp[512];
-	//mbstowcs(tmp, str, sizeof(tmp) / sizeof(wchar_t));
 	SDL_Surface* src = TTF_RenderUTF8_Blended(font, str, col);
-	//SDL_Surface * src = TTF_RenderUNICODE_Blended(font, (Uint16 *)tmp, col);
 	TTF_SetFontStyle(font, old);
+
 	if (src) {
 		SDL_Texture* tex = SDL_CreateTextureFromSurface(config.mRenderer, src);
 		if (tex) {
@@ -38,21 +35,6 @@ void draw_text(TTF_Font* font, int x, int y, const SDL_Color& col, const char* s
 	}
 }
 
-void draw_text(TTF_Font* font, int x, int y, const SDL_Color& col, const vector<string>& lines, int style) {
-	if (font == NULL) {
-		font = config.backup_font;
-	}
-
-	int cy = y;
-	SDL_Point sz;
-	for (size_t i = 0; i < lines.size(); i++) {
-		auto& str = lines[i];
-		TTF_SizeUTF8(font, str.c_str(), &sz.x, &sz.y);
-		draw_text(font, x, cy, col, str.c_str(), style);
-		cy += sz.y;
-	}
-}
-
 void draw_text(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style) {
 	if (font == NULL) {
 		font = config.backup_font;
@@ -60,26 +42,9 @@ void draw_text(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color&
 
 	int old = TTF_GetFontStyle(font);
 	TTF_SetFontStyle(font, style);
-
-	//static wchar_t tmp[512];
-	//mbstowcs(tmp, str, sizeof(tmp) / sizeof(wchar_t));
-	/*
-	if (style & TTF_STYLE_OUTLINE2) {
-		TTF_SetFontOutline(font, 2);
-	} else if (style & TTF_STYLE_OUTLINE) {
-		TTF_SetFontOutline(font, 1);
-	} else {
-		TTF_SetFontOutline(font, 0);
-	}
-	*/
 	SDL_Surface* src = TTF_RenderUTF8_Blended(font, str.c_str(), col);
-	/*
-	if (style & (TTF_STYLE_OUTLINE | TTF_STYLE_OUTLINE2)) {
-		TTF_SetFontOutline(font, 0);
-	}
-	*/
-	//SDL_Surface * src = TTF_RenderUNICODE_Blended(font, (Uint16 *)tmp, col);
 	TTF_SetFontStyle(font, old);
+
 	if (src) {
 		SDL_Texture* tex = SDL_CreateTextureFromSurface(config.mRenderer, src);
 		if (tex) {
@@ -114,6 +79,28 @@ void draw_text(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color&
 	}
 }
 
+void draw_text(int ptSize, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style) {
+	int w, h;
+
+	bool done = false;
+	while (!done) {
+		auto font = GetFontSize(ptSize);
+
+		int old = TTF_GetFontStyle(font);
+		TTF_SetFontStyle(font, style);
+
+		TTF_SizeUTF8(font, str.c_str(), &w, &h);
+
+		if ((w <= rc.w && h <= rc.h) || ptSize <= 10) {
+			draw_text(font, rc, align, col, str, style);
+			done = true;
+		}
+
+		TTF_SetFontStyle(font, old);
+		ptSize -= 2;
+	}
+}
+
 void draw_text_wrapped(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style) {
 	if (font == NULL) {
 		font = config.backup_font;
@@ -140,16 +127,6 @@ void draw_text_wrapped(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SD
 			rc2.y = rc.y;
 			rc2.w = src->w;
 			rc2.h = src->h;
-			/*
-			if (align & DTA_RIGHT) {
-				rc2.x = rc.x + rc.w - src->w;
-			} else if (align & DTA_CENTER) {
-				rc2.y = rc.y;
-				rc2.x = rc.x + ((rc.w - src->w) / 2);
-			} else {
-				rc2.x = rc.x;
-			}
-			*/
 			rc2.x = rc.x;
 			if (align & DTA_MIDDLE) {
 				rc2.y += (rc.h - src->h) / 2;
@@ -238,7 +215,61 @@ void draw_text_wrapped(int ptSize, const SDL_Rect& rc, uint8 align, const SDL_Co
 }
 
 void CachedText::Draw() {
-	draw_text(font, rc, align, col, _str, style);
+	int h = rc.h + 10;
+	int w = rc.w + 10;
+	int ptSize = font_size;
+
+	if (tex == NULL) {
+		SDL_Surface* src = NULL;
+		while (src == NULL) {
+			auto font = GetFontSize(ptSize);
+
+			int old = TTF_GetFontStyle(font);
+			TTF_SetFontStyle(font, style);
+
+			TTF_SizeUTF8(font, str.c_str(), &w, &h);
+
+			if ((w <= rc.w && h <= rc.h) || ptSize <= 10) {
+				src = TTF_RenderUTF8_Blended(font, str.c_str(), col);
+				if (src != NULL) {
+					tex = SDL_CreateTextureFromSurface(config.mRenderer, src);
+					tex_size = { src->w, src->h };
+					SDL_FreeSurface(src);
+				} else {
+					break;
+				}
+			}
+
+			TTF_SetFontStyle(font, old);
+			ptSize -= 2;
+		}
+	}
+	
+	if (tex) {
+		SDL_Rect rc2;
+		rc2.y = rc.y;
+		rc2.w = tex_size.w;
+		rc2.h = tex_size.h;
+		if (align & DTA_RIGHT) {
+			rc2.x = rc.x + rc.w - tex_size.w;
+		} else if (align & DTA_CENTER) {
+			rc2.y = rc.y;
+			rc2.x = rc.x + ((rc.w - tex_size.w) / 2);
+		} else {
+			rc2.x = rc.x;
+		}
+		if (align & DTA_MIDDLE) {
+			rc2.y += (rc.h - tex_size.h) / 2;
+		} else if (align & DTA_BOTTOM) {
+			rc2.y += rc.h - tex_size.h - 1;
+		}
+
+		SDL_Rect clip = { 0,0,0,0 };
+		SDL_RenderGetClipRect(config.mRenderer, &clip);
+		SDL_RenderSetClipRect(config.mRenderer, &rc);
+		SDL_RenderCopy(config.mRenderer, tex, NULL, &rc2);
+		SDL_RenderSetClipRect(config.mRenderer, (clip.w || clip.h) ? &clip : NULL);
+	}
 }
 
 string ts_to_str(time_t ts) {

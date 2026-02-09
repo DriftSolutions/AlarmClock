@@ -35,12 +35,12 @@
 #define NUM_BUTTONS ((BUTTONS_PER_ROW - 1) * BUTTONS_PER_COL)
 
 #define TITLE_FONT_SIZE 42
-#define TIME_FONT_SIZE 200
+#define TIME_FONT_SIZE 250
 #define FLIP_TIME_FONT_SIZE 100
 #define ALARM_FONT_SIZE 96
 #define MENU_FONT_SIZE 36
 #define FOOTER_FONT_SIZE 24
-#define STATUS_FONT_SIZE 18
+#define STATUS_FONT_SIZE 22
 
 #define ALERT_CHANNEL 0
 
@@ -250,6 +250,7 @@ enum DRAW_TEXT_ALIGNMENTS {
 	DTA_BOTTOM = 32
 };
 void draw_text(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style = TTF_STYLE_NORMAL); // align = DRAW_TEXT_ALIGNMENTS
+void draw_text(int ptSize, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style);
 void draw_text_wrapped(TTF_Font* font, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style = TTF_STYLE_NORMAL); // doesn't size down font to fit rc
 void draw_text_wrapped(int ptSize, const SDL_Rect& rc, uint8 align, const SDL_Color& col, const string& str, int style = TTF_STYLE_NORMAL); // sizes down font if needed to fit rc
 
@@ -257,10 +258,12 @@ class CachedText {
 private:
 	string _str;
 	SDL_Texture* tex = NULL;
+	SDL_Size tex_size = { 0 };
 public:
 	const string& str = _str;
 
-	TTF_Font* font = NULL;
+	// If you change of any of these, makes sure to call clearCache()
+	int font_size = 12;
 	SDL_Rect rc = { 0 };
 	uint8 align = DTA_LEFT | DTA_TOP;
 	SDL_Color col = { 0 };
@@ -269,19 +272,19 @@ public:
 	void setText(const string& pstr) {
 		if (pstr != str) {
 			_str = pstr;
-			free_texture();
+			clearCache();
 		}
 	}
 	void Draw();
 
-	void free_texture() {
+	void clearCache() {
 		if (tex != NULL) {
 			SDL_DestroyTexture(tex);
 			tex = NULL;
 		}
 	}
 	~CachedText() {
-		free_texture();
+		clearCache();
 	}
 };
 
