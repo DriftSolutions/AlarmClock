@@ -45,6 +45,7 @@ Pull Requests are welcome if you'd like to contribute.
 | U-Shape/180 degree USB-A adapter. If you buy a different one watch the polarity of the end that connects to the Pi, it won't work if it's opposite from these. See [USB-C 180 Adapters.png](./Images/USB-C_180_Adapters.png) for an example. | For USB Sound Card | [Buy on Amazon](https://www.amazon.com/dp/B0BZ4M7FYH/) |
 | Option 1: Adafruit 4259 USB-C to USB-A Jack and a 6" USB-A to USB-C Cable | Power inlet on the back of the case | [Buy on Amazon](https://www.amazon.com/dp/B082FNRPWL/) |
 | Option 2: Adafruit 4261 USB-C to USB-C Jack and a 6" USB-C to USB-C Cable | Power inlet on the back of the case | [Buy on Adafruit](https://www.adafruit.com/product/4261) |
+| Option 3: Skip the USB-C jack and print the cord retainer plug. The Pi power supply has a ferrite on it, you can put that inside the main unit and use the plug to keep the cord from being pulled and unplugged from the Pi | Power inlet on the back of the case | N/A |
 | uxcell 30mm Arcade Button | For turning off the alarm when it's going off | [Buy on Amazon](https://www.amazon.com/dp/B07XYW58HV/) [They have other colors too](https://www.amazon.com/s?k=uxcell+30mm+Mounting+Hole+Game+Push+Button) |
 | 2x ~20cm Jumper Wires with Dupont connectors on at least one end | For connecting the Arcade Button to the Pi | [Buy on Amazon](https://www.amazon.com/dp/B0BRTJQGS6) |
 | 4x Small Rubber Feet (Cabinet Door/Drawer Bumpers) | For the bottom, for grip and to allow airflow in for cooling | [Buy on Amazon](https://www.amazon.com/dp/B08BR6CGWL) |
