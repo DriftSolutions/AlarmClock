@@ -35,6 +35,9 @@ void PageMenu::OnActivate() {
 		prev_button = config.side_menu->items[2];
 		next_button = config.side_menu->items[3];
 	}
+	if (menu) {
+		menu->OnActivate();
+	}
 }
 
 string get_relative_day_string(const struct tm& target) {
@@ -110,6 +113,7 @@ void PageMenu::OnClick(const SDL_Point& pt) {
 	} else if (ret == MCR_BACK) {
 		if (stack.size()) {
 			menu = *stack.rbegin();
+			menu->OnActivate();
 			stack.pop_back();
 		} else {
 			switch_to_clock();
@@ -224,7 +228,7 @@ void MenuItem::Draw() {
 			line_skip
 		};
 		thickLineRGBA(config.mRenderer, rc3.x, rc3.y, rc3.x + rc3.w, rc3.y, 2, colors.menu_frame.r, colors.menu_frame.g, colors.menu_frame.b, colors.menu_frame.a);
-		draw_text_wrapped(GetFontSize(FOOTER_FONT_SIZE), rc, DTA_CENTER | DTA_BOTTOM, fg, footer);
+		draw_text_wrapped(FOOTER_FONT_SIZE, rc3, DTA_CENTER | DTA_MIDDLE, fg, footer);
 
 		SDL_Rect rc2 = rc;
 		rc2.h -= line_skip;

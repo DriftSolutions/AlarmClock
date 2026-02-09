@@ -822,6 +822,7 @@ void CONFIG::Alarm() {
 
 void CONFIG::ClearAlarm() {
     if (_alarming) {
+        printf("Alarm acknowledged, shutting up now...\n");
         _alarming = false;
         if (config.options.auto_enable_at_midnight) {
             printf("Disabling alarm until midnight...\n");

@@ -73,7 +73,7 @@ public:
     }
 
     void updateFooter() {
-        footer = config.options.dim_when_dark ? "On" : "Off";
+        footer = config.options.flip_clock_style ? "On" : "Off";
     }
 
     void getColors(SDL_Color& bgcol, SDL_Color& fgcol) {

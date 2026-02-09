@@ -11,6 +11,15 @@ public:
 
     void updateText() {
         text = config.options.enable_alarm ? "Alarm On" : "Alarm Off";
+        if (!config.options.enable_alarm && config.options.auto_enable_at_midnight) {
+            footer = "Re-enables at Midnight";
+        } else {
+            footer.clear();
+        }
+    }
+
+    void OnActivate() {
+        updateText();
     }
 
     void getColors(SDL_Color& bgcol, SDL_Color& fgcol) {

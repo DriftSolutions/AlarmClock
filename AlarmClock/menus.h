@@ -33,6 +33,8 @@ public:
 		return on_press_return;
 	}
 
+	virtual void OnActivate() {}
+
 	virtual void getColors(SDL_Color& bgcol, SDL_Color& fgcol) {} // the default will be the stock background/foreground colors, you don't need to do anything to keep them
 
 	virtual void Draw();
@@ -48,6 +50,12 @@ public:
 		for (size_t i = 0; i < NUM_BUTTONS && (i + first_ind) < items.size(); i++) {
 			auto& itm = items[i + first_ind];
 			itm->Draw();
+		}
+	}
+
+	virtual void OnActivate() {
+		for (auto& itm : items) {
+			itm->OnActivate();
 		}
 	}
 
