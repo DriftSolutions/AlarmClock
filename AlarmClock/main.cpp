@@ -817,7 +817,10 @@ int main(int argc, const char* argv[]) {
 }
 
 void CONFIG::Alarm() {
-    _alarming = true;
+    if (!_alarming) {
+        printf("Alarm!\n");
+        _alarming = true;
+    }
 }
 
 void CONFIG::ClearAlarm() {
@@ -834,6 +837,11 @@ void CONFIG::ClearAlarm() {
 
 void CONFIG::SetIsDark(bool dark) {
     if (dark != is_dark) {
+        if (dark) {
+            printf("It is now dark outside...\n");
+        } else {
+            printf("It is now light outside...\n");
+        }
         _is_dark = dark;
         if (config.cur_page) {
             config.cur_page->OnDarkChanged();

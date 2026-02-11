@@ -292,10 +292,12 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 			if (!config.home_assistant.alarm_entity.empty() && (config.alarming != last_sent_alarming || time(NULL) - this_last_sent >= 600)) {
 				bool tmp = config.alarming;
 				if (cli->UpdateStateStr(config.home_assistant.alarm_entity, tmp ? "on" : "off")) {
+					printf("Sent Home Assistant new alarm status: %s\n", tmp ? "on" : "off");
 					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
 					last_sent_alarming = tmp;
 					last_sent = time(NULL);
 				} else {
+					printf("Error sending Home Assistant new alarm status: %s -> %s\n", tmp ? "on" : "off", cli->error.c_str());
 					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
 				}
 			}
@@ -308,10 +310,12 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 					localtime_r(&next_alarm, &tm);
 					strftime(buf, sizeof(buf), "%FT%T", &tm);
 					if (cli->UpdateStateStr(config.home_assistant.next_alarm_entity, buf)) {
+						printf("Sent Home Assistant new next alarm time: %s\n", buf);
 						statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
 						last_sent_next_alarm = next_alarm;
 						last_sent = time(NULL);
 					} else {
+						printf("Error sending Home Assistant new next alarm time: %s -> %s\n", buf, cli->error.c_str());
 						statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
 					}
 				}
