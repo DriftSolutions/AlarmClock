@@ -23,6 +23,8 @@ home_assistant_token=
 
 # Binary sensor that will be set to On/Off if your alarm is going off or not. Comment out or blank to not publish one.
 home_assistant_alarming=binary_sensor.alarm_clock
+# Binary sensor that will be set to On/Off if your alarm is enabled or not. Comment out or blank to not publish one.
+home_assistant_alarm_enabled=binary_sensor.alarm_clock_enabled
 # Sensor that will be updated with the time of your next alarm. Comment out or blank to not publish one.
 home_assistant_next_alarm=input_datetime.sensor_alarm_clock_next_alarm
 

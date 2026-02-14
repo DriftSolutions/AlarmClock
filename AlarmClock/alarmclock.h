@@ -179,10 +179,10 @@ public:
 			return (!url.empty() && !token.empty());
 		}
 
-		string alarm_entity, next_alarm_entity;
+		string alarm_entity, next_alarm_entity, alarm_enabled_entity;
 		bool needToSendUpdates() const { 
 			if (isValid()) {
-				return (!alarm_entity.empty() || !next_alarm_entity.empty());
+				return (!alarm_entity.empty() || !next_alarm_entity.empty() || !alarm_enabled_entity.empty());
 			}
 			return false;
 		}

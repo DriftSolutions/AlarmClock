@@ -177,6 +177,7 @@ bool init() {
     config.home_assistant.url = cfg->GetArg("-home_assistant_url");
     config.home_assistant.token = cfg->GetArg("-home_assistant_token");
     config.home_assistant.alarm_entity = cfg->GetArg("-home_assistant_alarming");
+    config.home_assistant.alarm_enabled_entity = cfg->GetArg("-home_assistant_alarm_enabled");
     config.home_assistant.next_alarm_entity = cfg->GetArg("-home_assistant_next_alarm");
 
     load_dynamic_settings();

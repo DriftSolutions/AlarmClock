@@ -282,43 +282,60 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 	
 	bool send_updates = config.home_assistant.needToSendUpdates();
 	bool last_sent_alarming = false;
+	bool last_sent_alarm_enabled = false;
 	time_t last_sent_next_alarm = 0;
 	int64 last_sent = 0;
 
 	int64 last_update = 0;
 	while (!config.shutdown_now) {
 		if (send_updates) {
-			int64 this_last_sent = last_sent;
-			if (!config.home_assistant.alarm_entity.empty() && (config.alarming != last_sent_alarming || time(NULL) - this_last_sent >= 600)) {
+			bool do_scheduled_send = (time(NULL) - last_sent >= 600);
+			bool had_error = false;
+
+			if (!config.home_assistant.alarm_entity.empty() && (config.alarming != last_sent_alarming || do_scheduled_send)) {
 				bool tmp = config.alarming;
 				if (cli->UpdateStateStr(config.home_assistant.alarm_entity, tmp ? "on" : "off")) {
 					printf("Sent Home Assistant new alarm status: %s\n", tmp ? "on" : "off");
-					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
 					last_sent_alarming = tmp;
-					last_sent = time(NULL);
 				} else {
 					printf("Error sending Home Assistant new alarm status: %s -> %s\n", tmp ? "on" : "off", cli->error.c_str());
 					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
+					had_error = true;
+				}
+			}
+			if (!config.home_assistant.alarm_enabled_entity.empty() && (config.options.enable_alarm != last_sent_alarm_enabled || do_scheduled_send)) {
+				bool tmp = config.options.enable_alarm;
+				if (cli->UpdateStateStr(config.home_assistant.alarm_enabled_entity, tmp ? "on" : "off")) {
+					printf("Sent Home Assistant new alarm enabled status: %s\n", tmp ? "on" : "off");
+					last_sent_alarm_enabled = tmp;
+				} else {
+					printf("Error sending Home Assistant new alarm enabled status: %s -> %s\n", tmp ? "on" : "off", cli->error.c_str());
+					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
+					had_error = true;
 				}
 			}
 
 			if (!config.home_assistant.next_alarm_entity.empty()) {
-				time_t next_alarm = config.options.enable_alarm ? config.options.GetNextAlarmTime() : 0;
-				if (next_alarm != last_sent_next_alarm || time(NULL) - this_last_sent >= 600) {
+				time_t next_alarm = config.options.GetNextAlarmTime();
+				if (next_alarm != last_sent_next_alarm || do_scheduled_send) {
 					char buf[128];
 					struct tm tm;
 					localtime_r(&next_alarm, &tm);
 					strftime(buf, sizeof(buf), "%FT%T", &tm);
 					if (cli->UpdateStateStr(config.home_assistant.next_alarm_entity, buf)) {
 						printf("Sent Home Assistant new next alarm time: %s\n", buf);
-						statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
 						last_sent_next_alarm = next_alarm;
-						last_sent = time(NULL);
 					} else {
 						printf("Error sending Home Assistant new next alarm time: %s -> %s\n", buf, cli->error.c_str());
 						statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
+						had_error = true;
 					}
 				}
+			}
+
+			if (!had_error) {
+				statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
+				last_sent = time(NULL);
 			}
 		}
 
