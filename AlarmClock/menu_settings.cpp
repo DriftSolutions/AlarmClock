@@ -120,6 +120,41 @@ public:
     }
 };
 
+class MenuItem_MainMenu_TimeFormat : public MenuItem {
+public:
+    MenuItem_MainMenu_TimeFormat() {
+        text = "Time Format";
+        updateFooter();
+    }
+
+    void updateFooter() {
+        switch (config.options.time_format) {
+            case TF_12HOUR_SUFFIX:
+                footer = "12 hour w/suffix";
+                break;
+            case TF_12HOUR_PLAIN:
+                footer = "12 hour";
+                break;
+            case TF_24HOUR:
+                footer = "24 hour";
+                break;
+            default:
+                footer = "Unknown";
+                break;
+        }
+    }
+
+    virtual MENU_CLICK_RETURN OnPress() {
+        config.options.time_format = (TIME_FORMATS)(config.options.time_format + 1);
+        if (config.options.time_format >= TF_NUM_FORMATS) {
+            config.options.time_format = (TIME_FORMATS)0;
+        }
+        updateFooter();
+        save_dynamic_settings();
+        return MCR_DO_NOTHING;
+    }
+};
+
 class MenuItem_MainMenu_Exit : public MenuItem {
 public:
     MenuItem_MainMenu_Exit() {
@@ -147,6 +182,10 @@ void switch_to_menu_settings() {
     m->items.push_back(i);
 
     i = make_shared<MenuItem_MainMenu_ScreenTimeout>();
+    i->rc = config.menu_buttons.buttons[btn_ind++];
+    m->items.push_back(i);
+
+    i = make_shared<MenuItem_MainMenu_TimeFormat>();
     i->rc = config.menu_buttons.buttons[btn_ind++];
     m->items.push_back(i);
 

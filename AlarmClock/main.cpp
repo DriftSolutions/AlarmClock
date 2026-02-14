@@ -991,6 +991,7 @@ void ConfigOptions::ToUniValue(UniValue& obj) {
     obj.pushKV("dim_when_dark", dim_when_dark);
     obj.pushKV("auto_enable_at_midnight", auto_enable_at_midnight);
     obj.pushKV("flip_clock_style", flip_clock_style);
+    obj.pushKV("time_format", int64(time_format));    
     obj.pushKV("screen_timeout", screen_timeout / 1000);
 
     UniValue ota(UniValue::VOBJ);
@@ -1033,6 +1034,12 @@ bool ConfigOptions::FromUniValue(const UniValue& obj) {
     }    
     if (obj.exists("screen_timeout") && obj["screen_timeout"].isNum()) {
         screen_timeout = (uint64)max((int64_t)1, obj["screen_timeout"].get_int64()) * 1000;
+    }    
+    if (obj.exists("time_format") && obj["time_format"].isNum()) {
+        int tmp = obj["time_format"].get_int();
+        if (tmp >= 0 && tmp < TF_NUM_FORMATS) {
+            config.options.time_format = (TIME_FORMATS)tmp;
+        }
     }
 
     if (obj.exists("one_time_alarm")) {

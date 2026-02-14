@@ -35,7 +35,7 @@
 #define NUM_BUTTONS ((BUTTONS_PER_ROW - 1) * BUTTONS_PER_COL)
 
 #define TITLE_FONT_SIZE 42
-#define TIME_FONT_SIZE 250
+#define TIME_FONT_SIZE 400
 #define FLIP_TIME_FONT_SIZE 100
 #define ALARM_FONT_SIZE 96
 #define MENU_FONT_SIZE 36
@@ -103,12 +103,20 @@ struct ALARM_TIME {
 	}
 };
 
+enum TIME_FORMATS {
+	TF_12HOUR_SUFFIX,
+	TF_12HOUR_PLAIN,
+	TF_24HOUR,
+	TF_NUM_FORMATS
+};
+
 class ConfigOptions {
 public:
 	bool enable_alarm = false;
 	bool dim_when_dark = true;
 	bool auto_enable_at_midnight = false;
 	bool flip_clock_style = false;
+	TIME_FORMATS time_format = TF_12HOUR_SUFFIX;
 	// If there is no activity, it will return to the clock display after this long
 #ifdef DEBUG
 	uint64 screen_timeout = 30000;

@@ -291,12 +291,14 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 		if (send_updates) {
 			bool do_scheduled_send = (time(NULL) - last_sent >= 600);
 			bool had_error = false;
+			bool did_send = false;
 
 			if (!config.home_assistant.alarm_entity.empty() && (config.alarming != last_sent_alarming || do_scheduled_send)) {
 				bool tmp = config.alarming;
 				if (cli->UpdateStateStr(config.home_assistant.alarm_entity, tmp ? "on" : "off")) {
 					printf("Sent Home Assistant new alarm status: %s\n", tmp ? "on" : "off");
 					last_sent_alarming = tmp;
+					did_send = true;
 				} else {
 					printf("Error sending Home Assistant new alarm status: %s -> %s\n", tmp ? "on" : "off", cli->error.c_str());
 					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
@@ -308,6 +310,7 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 				if (cli->UpdateStateStr(config.home_assistant.alarm_enabled_entity, tmp ? "on" : "off")) {
 					printf("Sent Home Assistant new alarm enabled status: %s\n", tmp ? "on" : "off");
 					last_sent_alarm_enabled = tmp;
+					did_send = true;
 				} else {
 					printf("Error sending Home Assistant new alarm enabled status: %s -> %s\n", tmp ? "on" : "off", cli->error.c_str());
 					statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
@@ -325,6 +328,7 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 					if (cli->UpdateStateStr(config.home_assistant.next_alarm_entity, buf)) {
 						printf("Sent Home Assistant new next alarm time: %s\n", buf);
 						last_sent_next_alarm = next_alarm;
+						did_send = true;
 					} else {
 						printf("Error sending Home Assistant new next alarm time: %s -> %s\n", buf, cli->error.c_str());
 						statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA Error: %s", cli->error.c_str()));
@@ -333,7 +337,7 @@ DSL_DEFINE_THREAD(HomeAssistantUpdateInfoThread) {
 				}
 			}
 
-			if (!had_error) {
+			if (did_send && !had_error) {
 				statusbar_set(SB_HOME_ASSISTANT_SEND, mprintf("HA: Sent %s", ts_to_str(time(NULL)).c_str()));
 				last_sent = time(NULL);
 			}

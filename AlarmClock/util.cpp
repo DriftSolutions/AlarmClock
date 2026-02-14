@@ -279,19 +279,20 @@ string ts_to_str(time_t ts) {
 }
 
 string tm_to_str(const tm& tm) {
+	if (config.options.time_format == TF_24HOUR) {
+		return mprintf("%d:%02d", tm.tm_hour, tm.tm_min);
+	}
+
 	string hour, min, post;
 	if (tm.tm_hour == 0) {
 		hour = "12";
-		post = "a";
-	} else if (tm.tm_hour < 12) {
+	} else if (tm.tm_hour <= 12) {
 		hour = mprintf("%d", tm.tm_hour);
-		post = "a";
-	} else if (tm.tm_hour == 12) {
-		hour = "12";
-		post = "p";
 	} else {
 		hour = mprintf("%d", tm.tm_hour - 12);
-		post = "p";
+	}
+	if (config.options.time_format == TF_12HOUR_SUFFIX) {
+		post = (tm.tm_hour >= 12) ? "p" : "a";
 	}
 	return mprintf("%s:%02d%s", hour.c_str(), tm.tm_min, post.c_str());
 }
